@@ -104,7 +104,7 @@ void mul1(int num, DT* data, int repeat, DT vv)
 			MUL1_MOP20 MUL1_MOP20 MUL1_MOP20 MUL1_MOP20 MUL1_MOP20
 			MUL1_MOP20 MUL1_MOP20 MUL1_MOP20 MUL1_MOP20 MUL1_MOP20
 		}
-		mm512_store_pd(&(data[gid]), s);
+		_mm512_store_pd(&(data[gid]), s);
 	}
 #endif
 

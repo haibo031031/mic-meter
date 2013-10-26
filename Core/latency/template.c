@@ -6,7 +6,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
-#include "../../common/common.h"
+#include "../../Common/common.h"
 #define NUMTESTS 20
 
 
