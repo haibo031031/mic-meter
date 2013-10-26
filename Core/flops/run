@@ -1,0 +1,39 @@
+#!/bin/bash
+
+fName2_60="flops2_60.dat"
+fName2_120="flops2_120.dat"
+fName2_240="flops2_240.dat"
+dirName="~/mic-meter/core/flops/"
+
+# compile 
+make clean; make;
+
+# transfer
+ssh mic0 "mkdir mic-meter; mkdir mic-meter/core; mkdir mic-meter/core/flops"
+scp * mic0:${dirName}/
+
+# run
+rm ${fName}; rm ${fName2_60}; rm ${fName2_120}; rm ${fName2_240};
+ssh mic0 "cd ${dirName}; rm $fName; rm ${fName2_60}; rm ${fName2_120}; rm ${fName2_240}; "
+
+rset=(1 2 3 4 5 6 7 8 9 10)
+for r in ${rset[@]}; do
+
+ssh mic0 "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib64/; export OMP_NUM_THREADS=60; export KMP_AFFINITY=granularity=fine,proclist=[1-239:4],explicit; cd ${dirName}; ./${subDir2}/flops >> ${fName2_60}"
+ssh mic0 "cd ${dirName}; echo ' ' >> ${fName2_60}"
+
+ssh mic0 "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib64/; export OMP_NUM_THREADS=120; export KMP_AFFINITY=granularity=fine,proclist=[1-239:2],explicit; cd ${dirName}; ./${subDir2}/flops >> ${fName2_120}"
+ssh mic0 "cd ${dirName}; echo ' ' >> ${fName2_120}"
+
+ssh mic0 "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib64/; export OMP_NUM_THREADS=240; export KMP_AFFINITY=granularity=fine,proclist=[0-239:1],explicit; cd ${dirName}; ./${subDir2}/flops >> ${fName2_240}"
+ssh mic0 "cd ${dirName}; echo ' ' >> ${fName2_240}"
+
+done
+
+# download data
+scp mic0:${dirName}/${fName2_60} .
+scp mic0:${dirName}/${fName2_120} .
+scp mic0:${dirName}/${fName2_240} .
+
+
+
