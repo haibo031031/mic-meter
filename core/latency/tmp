@@ -1,0 +1,71 @@
+/**
+	This microbenchmark is used to measure instruction latency
+	Reference: https://www.agner.org/optimize/
+	26/10/2013 by Jianbin Fang at Delft University of Technology
+**/
+
+#include <stdio.h>
+#include <stdint.h>
+#include "../../common/common.h"
+#define NUMTESTS 20
+
+
+void Lat (int64_t clocks[]) {
+   int64_t before, overhead;
+   int i;
+
+   // to get the measure overhead
+   for (i = 0; i < NUMTESTS; i++) {
+      before = ReadTSC();     
+      clocks[i] = ReadTSC() - before;
+   }
+
+   // find minimum overhead
+   overhead = clocks[0];
+   for (i = 0; i < NUMTESTS; i++) {
+      if (clocks[i] < overhead) overhead = clocks[i];
+   }
+
+   // loop to measure clock cycles of test code
+   for (i = 0; i < NUMTESTS; i++) {
+      before = ReadTSC();        // clock count before
+
+   __asm__ __volatile__ (
+   " .intel_syntax noprefix \n"  // Switch to Intel syntax
+   " .rept 100              \n"  // Repeat if needed
+
+   @pair
+
+
+   " .endr                  \n"  // End of repeat
+   " .att_syntax prefix     \n"  // Switch back to AT&T syntax
+   );
+
+      
+      clocks[i] = ReadTSC() - before; 
+   }
+
+   // subtract overhead from clock counts
+   for (i = 0; i < NUMTESTS; i++) {
+      clocks[i] -= overhead;
+   }
+}
+
+
+int main() {
+
+   int64_t clocklist[NUMTESTS];
+   int i;
+   double cycles = 0.0;
+
+   // run latency tests
+   Lat(clocklist);
+
+   // print results
+   for(i=1; i<NUMTESTS; i++){ // ignore the first run to warmup
+	cycles += (double)(clocklist[i]);
+   }
+
+   printf("vexp223ps: %lf\n", cycles/(double)((NUMTESTS-1)*100));
+   return 0;
+}
