@@ -1,0 +1,51 @@
+#!/bin/bash
+
+fNamer="read.dat"
+fNamew="write.dat"
+# compile 
+cd ./read; make clean; make; cd ../; 
+cd ./write; make clean; make; cd ../; 
+
+# transfer
+scp -r ~/mic_bench/bandwidth mic0:~/mic_bench/
+
+# run
+ssh mic0 "cd ~/mic_bench/bandwidth/; rm $fNamer $fNamew"
+rset=(1 2 3 4 5 6 7 8 9 10)
+for r in ${rset[@]}; do
+ssh mic0 "export OMP_NUM_THREADS=1; export KMP_AFFINITY=granularity=fine,proclist=[1-239:4],explicit; cd ~/mic_bench/bandwidth/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamer"
+ssh mic0 "export OMP_NUM_THREADS=2; export KMP_AFFINITY=granularity=fine,proclist=[1-239:4],explicit; cd ~/mic_bench/bandwidth/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamer"
+ssh mic0 "export OMP_NUM_THREADS=4; export KMP_AFFINITY=granularity=fine,proclist=[1-239:4],explicit; cd ~/mic_bench/bandwidth/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamer"
+ssh mic0 "export OMP_NUM_THREADS=8; export KMP_AFFINITY=granularity=fine,proclist=[1-239:4],explicit; cd ~/mic_bench/bandwidth/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamer"
+ssh mic0 "export OMP_NUM_THREADS=16; export KMP_AFFINITY=granularity=fine,proclist=[1-239:4],explicit; cd ~/mic_bench/bandwidth/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamer"
+ssh mic0 "export OMP_NUM_THREADS=24; export KMP_AFFINITY=granularity=fine,proclist=[1-239:4],explicit; cd ~/mic_bench/bandwidth/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamer"
+ssh mic0 "export OMP_NUM_THREADS=32; export KMP_AFFINITY=granularity=fine,proclist=[1-239:4],explicit; cd ~/mic_bench/bandwidth/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamer"
+ssh mic0 "export OMP_NUM_THREADS=40; export KMP_AFFINITY=granularity=fine,proclist=[1-239:4],explicit; cd ~/mic_bench/bandwidth/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamer"
+ssh mic0 "export OMP_NUM_THREADS=48; export KMP_AFFINITY=granularity=fine,proclist=[1-239:4],explicit; cd ~/mic_bench/bandwidth/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamer"
+ssh mic0 "export OMP_NUM_THREADS=60; export KMP_AFFINITY=granularity=fine,proclist=[1-239:4],explicit; cd ~/mic_bench/bandwidth/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamer"
+ssh mic0 "export OMP_NUM_THREADS=120; export KMP_AFFINITY=granularity=fine,proclist=[1-239:2],explicit; cd ~/mic_bench/bandwidth/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamer"
+ssh mic0 "export OMP_NUM_THREADS=180; export KMP_AFFINITY=granularity=core,scatter; cd ~/mic_bench/bandwidth/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamer"
+ssh mic0 "export OMP_NUM_THREADS=240; export KMP_AFFINITY=granularity=fine,proclist=[0-239:1],explicit; cd ~/mic_bench/bandwidth/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamer"
+ssh mic0 "cd ~/mic_bench/bandwidth/; echo ' ' >> $fNamer"
+
+ssh mic0 "export OMP_NUM_THREADS=1; export KMP_AFFINITY=granularity=fine,proclist=[1-239:4],explicit; cd ~/mic_bench/bandwidth/; ./write/write | grep 'bw' | tr -d '[A-Za-z: \\n]'  >> $fNamew"
+ssh mic0 "export OMP_NUM_THREADS=2; export KMP_AFFINITY=granularity=fine,proclist=[1-239:4],explicit; cd ~/mic_bench/bandwidth/; ./write/write | grep 'bw' | tr -d '[A-Za-z: \\n]'  >> $fNamew"
+ssh mic0 "export OMP_NUM_THREADS=4; export KMP_AFFINITY=granularity=fine,proclist=[1-239:4],explicit; cd ~/mic_bench/bandwidth/; ./write/write | grep 'bw' | tr -d '[A-Za-z: \\n]'  >> $fNamew"
+ssh mic0 "export OMP_NUM_THREADS=8; export KMP_AFFINITY=granularity=fine,proclist=[1-239:4],explicit; cd ~/mic_bench/bandwidth/; ./write/write | grep 'bw' | tr -d '[A-Za-z: \\n]'  >> $fNamew"
+ssh mic0 "export OMP_NUM_THREADS=16; export KMP_AFFINITY=granularity=fine,proclist=[1-239:4],explicit; cd ~/mic_bench/bandwidth/; ./write/write | grep 'bw' | tr -d '[A-Za-z: \\n]'  >> $fNamew"
+ssh mic0 "export OMP_NUM_THREADS=24; export KMP_AFFINITY=granularity=fine,proclist=[1-239:4],explicit; cd ~/mic_bench/bandwidth/; ./write/write | grep 'bw' | tr -d '[A-Za-z: \\n]'  >> $fNamew"
+ssh mic0 "export OMP_NUM_THREADS=32; export KMP_AFFINITY=granularity=fine,proclist=[1-239:4],explicit; cd ~/mic_bench/bandwidth/; ./write/write | grep 'bw' | tr -d '[A-Za-z: \\n]'  >> $fNamew"
+ssh mic0 "export OMP_NUM_THREADS=40; export KMP_AFFINITY=granularity=fine,proclist=[1-239:4],explicit; cd ~/mic_bench/bandwidth/; ./write/write | grep 'bw' | tr -d '[A-Za-z: \\n]'  >> $fNamew"
+ssh mic0 "export OMP_NUM_THREADS=48; export KMP_AFFINITY=granularity=fine,proclist=[1-239:4],explicit; cd ~/mic_bench/bandwidth/; ./write/write | grep 'bw' | tr -d '[A-Za-z: \\n]'  >> $fNamew"
+ssh mic0 "export OMP_NUM_THREADS=60; export KMP_AFFINITY=granularity=fine,proclist=[1-239:4],explicit; cd ~/mic_bench/bandwidth/; ./write/write | grep 'bw' | tr -d '[A-Za-z: \\n]'  >> $fNamew"
+ssh mic0 "export OMP_NUM_THREADS=120; export KMP_AFFINITY=granularity=fine,proclist=[1-239:2],explicit; cd ~/mic_bench/bandwidth/; ./write/write | grep 'bw' | tr -d '[A-Za-z: \\n]'  >> $fNamew"
+ssh mic0 "export OMP_NUM_THREADS=180; export KMP_AFFINITY=granularity=core,scatter; cd ~/mic_bench/bandwidth/; ./write/write | grep 'bw' | tr -d '[A-Za-z: \\n]'  >> $fNamew"
+ssh mic0 "export OMP_NUM_THREADS=240; export KMP_AFFINITY=granularity=fine,proclist=[0-239:1],explicit; cd ~/mic_bench/bandwidth/; ./write/write | grep 'bw' | tr -d '[A-Za-z: \\n]'  >> $fNamew"
+ssh mic0 "cd ~/mic_bench/bandwidth/; echo ' ' >> $fNamew"
+
+done
+# download data
+
+scp mic0:~/mic_bench/bandwidth/$fNamer .
+scp mic0:~/mic_bench/bandwidth/$fNamew .
+

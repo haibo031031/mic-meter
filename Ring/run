@@ -1,0 +1,80 @@
+#!/bin/bash
+
+fNamecd="core_dist.dat"
+fNametd="thread_dist.dat"
+# compile 
+cd ./read; make clean; make; cd ../; 
+
+# transfer
+scp -r ~/mic_bench/interconnect mic0:~/mic_bench/
+
+# run
+ssh mic0 "cd ~/mic_bench/interconnect/; rm $fNamecd $fNametd"
+
+# compact
+ssh mic0 "export OMP_NUM_THREADS=2; export KMP_AFFINITY=granularity=fine,proclist=[1,5],explicit; cd ~/mic_bench/interconnect/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamecd"
+# scatter
+ssh mic0 "export OMP_NUM_THREADS=2; export KMP_AFFINITY=granularity=fine,proclist=[1,121],explicit; cd ~/mic_bench/interconnect/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamecd"
+# random
+ssh mic0 "export OMP_NUM_THREADS=2; export KMP_AFFINITY=granularity=fine,proclist=[201,93],explicit; cd ~/mic_bench/interconnect/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamecd"
+ssh mic0 "cd ~/mic_bench/interconnect/; echo ' ' >> $fNamecd"
+
+
+# compact
+ssh mic0 "export OMP_NUM_THREADS=4; export KMP_AFFINITY=granularity=fine,proclist=[1,5,9,13],explicit; cd ~/mic_bench/interconnect/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamecd"
+# scatter
+ssh mic0 "export OMP_NUM_THREADS=4; export KMP_AFFINITY=granularity=fine,proclist=[1,61,121,181],explicit; cd ~/mic_bench/interconnect/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamecd"
+# random
+ssh mic0 "export OMP_NUM_THREADS=4; export KMP_AFFINITY=granularity=fine,proclist=[185,189,217,45],explicit; cd ~/mic_bench/interconnect/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamecd"
+ssh mic0 "cd ~/mic_bench/interconnect/; echo ' ' >> $fNamecd"
+
+
+# compact
+ssh mic0 "export OMP_NUM_THREADS=8; export KMP_AFFINITY=granularity=fine,proclist=[1,5,9,13,17,21,25,29],explicit; cd ~/mic_bench/interconnect/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamecd"
+# scatter
+ssh mic0 "export OMP_NUM_THREADS=8; export KMP_AFFINITY=granularity=fine,proclist=[1,33,65,97,129,161,193,225],explicit; cd ~/mic_bench/interconnect/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamecd"
+# random
+ssh mic0 "export OMP_NUM_THREADS=8; export KMP_AFFINITY=granularity=fine,proclist=[81,185,65,133,113,149,85,121],explicit; cd ~/mic_bench/interconnect/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamecd"
+ssh mic0 "cd ~/mic_bench/interconnect/; echo ' ' >> $fNamecd"
+
+
+# compact
+ssh mic0 "export OMP_NUM_THREADS=16; export KMP_AFFINITY=granularity=fine,proclist=[1,5,9,13,17,21,25,29,33,37,41,45,49,53,57,61],explicit; cd ~/mic_bench/interconnect/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamecd"
+# scatter
+ssh mic0 "export OMP_NUM_THREADS=16; export KMP_AFFINITY=granularity=fine,proclist=[1,17,33,49,65,81,97,113,129,145,161,177,193,209,225,239],explicit; cd ~/mic_bench/interconnect/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamecd"
+# random
+ssh mic0 "export OMP_NUM_THREADS=16; export KMP_AFFINITY=granularity=fine,proclist=[229,217,153,173,33,145,1,57,193,37,97,29,25,237,53,121],explicit; cd ~/mic_bench/interconnect/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNamecd"
+ssh mic0 "cd ~/mic_bench/interconnect/; echo ' ' >> $fNamecd"
+
+#--------------------------------------------------------------
+# same
+ssh mic0 "export OMP_NUM_THREADS=1; export KMP_AFFINITY=granularity=fine,proclist=[1],explicit; cd ~/mic_bench/interconnect/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNametd"
+# seperate
+ssh mic0 "export OMP_NUM_THREADS=1; export KMP_AFFINITY=granularity=fine,proclist=[1],explicit; cd ~/mic_bench/interconnect/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNametd"
+ssh mic0 "cd ~/mic_bench/interconnect/; echo ' ' >> $fNametd"
+
+# same
+ssh mic0 "export OMP_NUM_THREADS=2; export KMP_AFFINITY=granularity=fine,proclist=[1,2],explicit; cd ~/mic_bench/interconnect/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNametd"
+# seperate
+ssh mic0 "export OMP_NUM_THREADS=2; export KMP_AFFINITY=granularity=fine,proclist=[1,5],explicit; cd ~/mic_bench/interconnect/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNametd"
+ssh mic0 "cd ~/mic_bench/interconnect/; echo ' ' >> $fNametd"
+
+
+# same
+ssh mic0 "export OMP_NUM_THREADS=3; export KMP_AFFINITY=granularity=fine,proclist=[1,2,3],explicit; cd ~/mic_bench/interconnect/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNametd"
+# seperate
+ssh mic0 "export OMP_NUM_THREADS=3; export KMP_AFFINITY=granularity=fine,proclist=[1,5,9],explicit; cd ~/mic_bench/interconnect/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNametd"
+ssh mic0 "cd ~/mic_bench/interconnect/; echo ' ' >> $fNametd"
+
+# same
+ssh mic0 "export OMP_NUM_THREADS=4; export KMP_AFFINITY=granularity=fine,proclist=[1,2,3,4],explicit; cd ~/mic_bench/interconnect/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNametd"
+# seperate
+ssh mic0 "export OMP_NUM_THREADS=4; export KMP_AFFINITY=granularity=fine,proclist=[1,5,9,13],explicit; cd ~/mic_bench/interconnect/; ./read/read | grep 'bw' | tr -d '[A-Za-z: \n]'  >> $fNametd"
+ssh mic0 "cd ~/mic_bench/interconnect/; echo ' ' >> $fNametd"
+
+# download data
+
+scp mic0:~/mic_bench/interconnect/$fNamecd .
+scp mic0:~/mic_bench/interconnect/$fNametd .
+
+
