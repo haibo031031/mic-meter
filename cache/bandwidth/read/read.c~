@@ -28,7 +28,7 @@ unsigned long long overhead(){
 		"lock;" 
 		"addl $0,(%%rsp);"
                 #endif
-		";"
+		//";"
                 #ifdef FORCE_CPUID
                 "mov $0, %%rax;"
                 "cpuid;"
@@ -70,15 +70,15 @@ void runHL(void * buffer, int size){
 void runLL(void * buffer, int size, double * perf){
 	
 	unsigned long long addr = (unsigned long long)buffer;	
-	unsigned long long passes = 8;	
+	unsigned long long passes = 4;	
 	
       /*
-       * Input: addr -> RBX (pointer to the buffer)
-       *        passes -> RCX
-       * Output : RAX stop timestamp - start timestamp
+       * Input: addr -> rbx (pointer to the buffer)
+       *        passes -> rcx
+       * Output : rax stop timestamp - start timestamp
        */
        __asm__ __volatile__(
-                 //first timestamp
+
                 "rdtsc;"
                 "shl $32,%%rdx;"
                 "add %%rdx,%%rax;"
@@ -87,45 +87,85 @@ void runLL(void * buffer, int size, double * perf){
                 "mov $0, %%rax;"
                 "cpuid;"
                 #else
-                //"mfence;"
 		"lock;" 
 		"addl $0,(%%rsp);"
                 #endif
                 ".align 64;"
                 "_work_loop_vmovapd_1:"
-                "vmovapd 0(%%rbx), %%zmm0;"
-                "vmovapd 64(%%rbx), %%zmm1;"
-                "vmovapd 128(%%rbx), %%zmm2;"
-                "vmovapd 192(%%rbx), %%zmm3;"
-                "vmovapd 256(%%rbx), %%zmm4;"
-                "vmovapd 320(%%rbx), %%zmm5;"
-                "vmovapd 384(%%rbx), %%zmm6;"
-                "vmovapd 448(%%rbx), %%zmm7;"
-                "vmovapd 512(%%rbx), %%zmm8;"
-                "vmovapd 576(%%rbx), %%zmm9;"
-                "vmovapd 640(%%rbx), %%zmm10;"
-                "vmovapd 704(%%rbx), %%zmm11;"
-                "vmovapd 768(%%rbx), %%zmm12;"
-                "vmovapd 832(%%rbx), %%zmm13;"
-                "vmovapd 896(%%rbx), %%zmm14;"
-                "vmovapd 960(%%rbx), %%zmm15;"
-                "vmovapd (1024+0)(%%rbx), %%zmm16;"
-                "vmovapd (1024+64)(%%rbx), %%zmm17;"
-                "vmovapd (1024+128)(%%rbx), %%zmm18;"
-                "vmovapd (1024+192)(%%rbx), %%zmm19;"
-                "vmovapd (1024+256)(%%rbx), %%zmm20;"
-                "vmovapd (1024+320)(%%rbx), %%zmm21;"
-                "vmovapd (1024+384)(%%rbx), %%zmm22;"
-                "vmovapd (1024+448)(%%rbx), %%zmm23;"
-                "vmovapd (1024+512)(%%rbx), %%zmm24;"
-                "vmovapd (1024+576)(%%rbx), %%zmm25;"
-                "vmovapd (1024+640)(%%rbx), %%zmm26;"
-                "vmovapd (1024+704)(%%rbx), %%zmm27;"
-                "vmovapd (1024+768)(%%rbx), %%zmm28;"
-                "vmovapd (1024+832)(%%rbx), %%zmm29;"
-                "vmovapd (1024+896)(%%rbx), %%zmm30;"
-                "vmovapd (1024+960)(%%rbx), %%zmm31;"
-                "add $2048,%%rbx;"
+
+		// 1KB
+                "vmovapd 0(%%rbx), %%zmm0;" 
+                "vmovapd 64(%%rbx), %%zmm0;"
+                "vmovapd 128(%%rbx), %%zmm0;"
+                "vmovapd 192(%%rbx), %%zmm0;"
+                "vmovapd 256(%%rbx), %%zmm0;"
+                "vmovapd 320(%%rbx), %%zmm0;"
+                "vmovapd 384(%%rbx), %%zmm0;"
+                "vmovapd 448(%%rbx), %%zmm0;"
+                "vmovapd 512(%%rbx), %%zmm0;"
+                "vmovapd 576(%%rbx), %%zmm0;"
+                "vmovapd 640(%%rbx), %%zmm0;"
+                "vmovapd 704(%%rbx), %%zmm0;"
+                "vmovapd 768(%%rbx), %%zmm0;"
+                "vmovapd 832(%%rbx), %%zmm0;"
+                "vmovapd 896(%%rbx), %%zmm0;"
+                "vmovapd 960(%%rbx), %%zmm0;"
+		
+		// 2KB
+                "vmovapd (1024+0)(%%rbx), %%zmm0;"
+                "vmovapd (1024+64)(%%rbx), %%zmm0;"
+                "vmovapd (1024+128)(%%rbx), %%zmm0;"
+                "vmovapd (1024+192)(%%rbx), %%zmm0;"
+                "vmovapd (1024+256)(%%rbx), %%zmm0;"
+                "vmovapd (1024+320)(%%rbx), %%zmm0;"
+                "vmovapd (1024+384)(%%rbx), %%zmm0;"
+                "vmovapd (1024+448)(%%rbx), %%zmm0;"
+                "vmovapd (1024+512)(%%rbx), %%zmm0;"
+                "vmovapd (1024+576)(%%rbx), %%zmm0;"
+                "vmovapd (1024+640)(%%rbx), %%zmm0;"
+                "vmovapd (1024+704)(%%rbx), %%zmm0;"
+                "vmovapd (1024+768)(%%rbx), %%zmm0;"
+                "vmovapd (1024+832)(%%rbx), %%zmm0;"
+                "vmovapd (1024+896)(%%rbx), %%zmm0;"
+                "vmovapd (1024+960)(%%rbx), %%zmm0;"
+
+		// 3KB
+                "vmovapd (2048+0)(%%rbx), %%zmm0;"
+                "vmovapd (2048+64)(%%rbx), %%zmm0;"
+                "vmovapd (2048+128)(%%rbx), %%zmm0;"
+                "vmovapd (2048+192)(%%rbx), %%zmm0;"
+                "vmovapd (2048+256)(%%rbx), %%zmm0;"
+                "vmovapd (2048+320)(%%rbx), %%zmm0;"
+                "vmovapd (2048+384)(%%rbx), %%zmm0;"
+                "vmovapd (2048+448)(%%rbx), %%zmm0;"
+                "vmovapd (2048+512)(%%rbx), %%zmm0;"
+                "vmovapd (2048+576)(%%rbx), %%zmm0;"
+                "vmovapd (2048+640)(%%rbx), %%zmm0;"
+                "vmovapd (2048+704)(%%rbx), %%zmm0;"
+                "vmovapd (2048+768)(%%rbx), %%zmm0;"
+                "vmovapd (2048+832)(%%rbx), %%zmm0;"
+                "vmovapd (2048+896)(%%rbx), %%zmm0;"
+                "vmovapd (2048+960)(%%rbx), %%zmm0;"
+
+		// 4KB
+                "vmovapd (3072+0)(%%rbx), %%zmm0;"
+                "vmovapd (3072+64)(%%rbx), %%zmm0;"
+                "vmovapd (3072+128)(%%rbx), %%zmm0;"
+                "vmovapd (3072+192)(%%rbx), %%zmm0;"
+                "vmovapd (3072+256)(%%rbx), %%zmm0;"
+                "vmovapd (3072+320)(%%rbx), %%zmm0;"
+                "vmovapd (3072+384)(%%rbx), %%zmm0;"
+                "vmovapd (3072+448)(%%rbx), %%zmm0;"
+                "vmovapd (3072+512)(%%rbx), %%zmm0;"
+                "vmovapd (3072+576)(%%rbx), %%zmm0;"
+                "vmovapd (3072+640)(%%rbx), %%zmm0;"
+                "vmovapd (3072+704)(%%rbx), %%zmm0;"
+                "vmovapd (3072+768)(%%rbx), %%zmm0;"
+                "vmovapd (3072+832)(%%rbx), %%zmm0;"
+                "vmovapd (3072+896)(%%rbx), %%zmm0;"
+                "vmovapd (3072+960)(%%rbx), %%zmm0;"
+
+                "add $4096,%%rbx;"
                 "sub $1,%%rcx;"
                 "jnz _work_loop_vmovapd_1;"
                 #ifdef FORCE_CPUID
@@ -149,23 +189,23 @@ void runLL(void * buffer, int size, double * perf){
 	return ;
 }
 
+/**
+	@ main entry
+**/
 int main(int argc, char** argv){
 	int size = 1024*16; // 16KB buffer
 	double perf[2];
 	void * buffer = _mm_malloc(size, ALIGN);
 	
-	// warm up (to move data into caches)
+	/**
+		warm up: 
+		(1) data--to move data into caches; 
+		(2) instruction-- to load instruction of runLL into ICache
+	**/
 	runHL(buffer, size);
-	runHL(buffer, size);	
-	runHL(buffer, size);
-	runHL(buffer, size);		
-	runHL(buffer, size);				
+	runLL(buffer, size, perf);
 
-	// run test 
-	runLL(buffer, size, perf);
-	runLL(buffer, size, perf);
-	runLL(buffer, size, perf);
-	runLL(buffer, size, perf);
+	// run test 	
 	runLL(buffer, size, perf);
 
 	// print results

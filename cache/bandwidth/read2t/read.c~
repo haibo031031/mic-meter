@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <malloc.h>
+#include <omp.h>
 #include "../../../common/common.h"
 /**
 	to measure the overhead of timer.
@@ -189,14 +190,8 @@ void runLL(void * buffer, int size, double * perf){
 	return ;
 }
 
-/**
-	@ main entry
-**/
-int main(int argc, char** argv){
-	int size = 1024*16; // 16KB buffer
+void batchDo(void *buffer, int size){
 	double perf[2];
-	void * buffer = _mm_malloc(size, ALIGN);
-	
 	/**
 		warm up: 
 		(1) data--to move data into caches; 
@@ -210,6 +205,31 @@ int main(int argc, char** argv){
 
 	// print results
 	printf("bandwidth: %lf\n", perf[0]);
-	if(buffer!=NULL) _mm_free(buffer);	
+	
+}
+/**
+	@ main entry
+**/
+int main(int argc, char** argv){
+	int size = 1024*16; // 16KB buffer	
+	void * buffer0 = _mm_malloc(size, ALIGN);
+	void * buffer1 = _mm_malloc(size, ALIGN);
+#pragma omp parallel
+{
+	int tid = omp_get_thread_num();
+	switch(tid){
+		case 0: 
+			batchDo(buffer0, size);
+			break;
+		case 1: 
+			batchDo(buffer1, size);
+			break;
+		default:
+			break;
+		
+	}	
+}
+	if(buffer0!=NULL) _mm_free(buffer0);
+	if(buffer1!=NULL) _mm_free(buffer1);		
 	return 1;
 }
