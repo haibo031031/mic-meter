@@ -1,4 +1,8 @@
 #include <time.h>
+/**
+	macro define
+**/
+#define ALIGN 
 
 /**
 	timer (ns)
