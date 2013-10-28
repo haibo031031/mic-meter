@@ -2,8 +2,8 @@
 	@ measure the time of moving (<)32KB data into registers
 	& calculate the transfer rates
 	@ 27/10/2013 by Jianbin Fang from Delft University of Technology
+	@ 28/10/2013 by Evghenii Gaburov from SURFsara
 	@ Reference1: BenchITv6
-	@ Reference2: Evghenii
 **/
 
 #include <stdio.h>
