@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "../../Common/common.h"
+#include "../../common/common.h"
 
 typedef double DT;
 #define MIC

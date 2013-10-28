@@ -306,7 +306,7 @@ int main(int argc, char** argv)
 	// mad116
 	init(hostMem, numFloats);
 	start_t = timer();	
-	mad116(numFloats, hostMem, repeat, 10.0, 0.9899);	
+	mad116(numFloats, hostMem, repeat*1, 10.0, 0.9899);	
 	end_t = timer();
 	delta_t = end_t - start_t;
 	flopCount = (double)numFloats * 2.0 * repeat * 16;
