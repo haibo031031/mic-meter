@@ -1,0 +1,32 @@
+#!/bin/bash
+
+fName1t="r1w1.dat"
+fName2t="r1w2.dat"
+dirName="/home/jfang/mic-meter/cache/bandwidth/r1wx/"
+# compile 
+cd ./r1w1; make clean; make; cd ../; 
+cd ./r1w2; make clean; make; cd ../; 
+
+# transfer
+ssh mic0 "mkdir mic-meter; mkdir mic-meter/cache/; mkdir mic-meter/cache/bandwidth/; mkdir mic-meter/cache/bandwidth/r1wx"
+scp -r ${dirName} mic0:~/mic-meter/cache/bandwidth/
+
+# remove history data records
+ssh mic0 "cd ${dirName}; rm $fName1t $fName2t"
+
+# run
+rset=(1 2 3 4 5 6 7 8 9 10)
+#rset=(1)
+for r in ${rset[@]}; do
+ssh mic0 "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib64/; export OMP_NUM_THREADS=2; export KMP_AFFINITY=granularity=fine,proclist=[1-239:1],explicit; cd ${dirName}; ./r1w1/cache_bw | grep "time" >> $fName1t"
+ssh mic0 "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib64/; export OMP_NUM_THREADS=2; export KMP_AFFINITY=granularity=fine,proclist=[1-239:1],explicit; cd ${dirName}; ./r1w2/cache_bw | grep "time" >> $fName2t"
+done
+
+# download data
+scp mic0:${dirName}/$fName1t .
+scp mic0:${dirName}/$fName2t .
+
+
+
+
+
