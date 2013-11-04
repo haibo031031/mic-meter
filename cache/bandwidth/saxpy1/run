@@ -1,0 +1,45 @@
+#!/bin/bash
+
+fName1t="rw1t.dat"
+fName2t="rw2t.dat"
+fName3t="rw3t.dat"
+fName4t="rw4t.dat"
+fName="raw.dat"
+
+# compile 
+make clean; make; 
+
+# transfer
+ssh mic0 "mkdir ~/mic-meter; mkdir ~/mic-meter/cache/; mkdir ~/mic-meter/cache/bandwidth/; "
+scp -r ~/mic-meter/cache/bandwidth/saxpy1 mic0:~/mic-meter/cache/bandwidth/
+
+# remove history data records
+ssh mic0 "cd ~/mic-meter/cache/bandwidth/saxpy1/; rm ${fName}"
+
+# run
+#rset=(1 2 3 4 5 6 7 8 9 10)
+rset=(1)
+for r in ${rset[@]}; do
+
+ssh mic0 "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib64/; export OMP_NUM_THREADS=1; export KMP_AFFINITY=granularity=fine,proclist=[1-239:1],explicit; cd ~/mic-meter/cache/bandwidth/saxpy1/; ./cache_bw 1"
+ssh mic0 "cd ~/mic-meter/cache/bandwidth/saxpy1/; echo ' ' >> $fName"
+
+ssh mic0 "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib64/; export OMP_NUM_THREADS=2; export KMP_AFFINITY=granularity=fine,proclist=[1-239:1],explicit; cd ~/mic-meter/cache/bandwidth/saxpy1/; ./cache_bw 2"
+ssh mic0 "cd ~/mic-meter/cache/bandwidth/saxpy1/; echo ' ' >> $fName"
+
+ssh mic0 "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib64/; export OMP_NUM_THREADS=3; export KMP_AFFINITY=granularity=fine,proclist=[1-239:1],explicit; cd ~/mic-meter/cache/bandwidth/saxpy1/; ./cache_bw 3"
+ssh mic0 "cd ~/mic-meter/cache/bandwidth/saxpy1/; echo ' ' >> $fName"
+
+ssh mic0 "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib64/; export OMP_NUM_THREADS=4; export KMP_AFFINITY=granularity=fine,proclist=[1-239:1],explicit; cd ~/mic-meter/cache/bandwidth/saxpy1/; ./cache_bw 4"
+ssh mic0 "cd ~/mic-meter/cache/bandwidth/saxpy1/; echo ' ' >> $fName"
+
+done
+
+# download data
+scp mic0:~/mic-meter/cache/bandwidth/saxpy1/${fName} .
+#scp mic0:~/mic-meter/cache/bandwidth/saxpy1/$fName2t .
+#scp mic0:~/mic-meter/cache/bandwidth/saxpy1/$fName3t .
+#scp mic0:~/mic-meter/cache/bandwidth/saxpy1/$fName4t .
+
+
+
