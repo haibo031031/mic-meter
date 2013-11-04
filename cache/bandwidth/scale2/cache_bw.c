@@ -168,16 +168,16 @@ int main(int argc, char** argv)
           const int cnts = elems >> 3;
           const __m512d  _a = _mm512_set1_pd(alpha);                           
           int ib;
-          for (ib = 0; ib < cnts; ib += 8*8)
+          for (ib = 0; ib < cnts; ib += 8*16)
           { 
-            Z[ib+0] = _mm512_mul_pd(_a,_x[ib+0]);
-            Z[ib+1] = _mm512_mul_pd(_a,_x[ib+1]);
-            Z[ib+2] = _mm512_mul_pd(_a,_x[ib+2]);
-            Z[ib+3] = _mm512_mul_pd(_a,_x[ib+3]);
-            Z[ib+4] = _mm512_mul_pd(_a,_x[ib+4]);
-            Z[ib+5] = _mm512_mul_pd(_a,_x[ib+5]);
-            Z[ib+6] = _mm512_mul_pd(_a,_x[ib+6]);
-            Z[ib+7] = _mm512_mul_pd(_a,_x[ib+7]);
+            Z[ib+8*0+0] = _mm512_mul_pd(_a,_x[ib+8*0+0]);
+            Z[ib+8*0+1] = _mm512_mul_pd(_a,_x[ib+8*0+1]);
+            Z[ib+8*0+2] = _mm512_mul_pd(_a,_x[ib+8*0+2]);
+            Z[ib+8*0+3] = _mm512_mul_pd(_a,_x[ib+8*0+3]);
+            Z[ib+8*0+4] = _mm512_mul_pd(_a,_x[ib+8*0+4]);
+            Z[ib+8*0+5] = _mm512_mul_pd(_a,_x[ib+8*0+5]);
+            Z[ib+8*0+6] = _mm512_mul_pd(_a,_x[ib+8*0+6]);
+            Z[ib+8*0+7] = _mm512_mul_pd(_a,_x[ib+8*0+7]);
 
             Z[ib+8*1+0] = _mm512_mul_pd(_a,_x[ib+8*1+0]);
             Z[ib+8*1+1] = _mm512_mul_pd(_a,_x[ib+8*1+1]);
@@ -241,6 +241,78 @@ int main(int argc, char** argv)
             Z[ib+8*7+5] = _mm512_mul_pd(_a,_x[ib+8*7+5]);
             Z[ib+8*7+6] = _mm512_mul_pd(_a,_x[ib+8*7+6]);
             Z[ib+8*7+7] = _mm512_mul_pd(_a,_x[ib+8*7+7]);
+
+            Z[ib+8*8+0] = _mm512_mul_pd(_a,_x[ib+8*8+0]);
+            Z[ib+8*8+1] = _mm512_mul_pd(_a,_x[ib+8*8+1]);
+            Z[ib+8*8+2] = _mm512_mul_pd(_a,_x[ib+8*8+2]);
+            Z[ib+8*8+3] = _mm512_mul_pd(_a,_x[ib+8*8+3]);
+            Z[ib+8*8+4] = _mm512_mul_pd(_a,_x[ib+8*8+4]);
+            Z[ib+8*8+5] = _mm512_mul_pd(_a,_x[ib+8*8+5]);
+            Z[ib+8*8+6] = _mm512_mul_pd(_a,_x[ib+8*8+6]);
+            Z[ib+8*8+7] = _mm512_mul_pd(_a,_x[ib+8*8+7]);
+
+            Z[ib+8*9+0] = _mm512_mul_pd(_a,_x[ib+8*9+0]);
+            Z[ib+8*9+1] = _mm512_mul_pd(_a,_x[ib+8*9+1]);
+            Z[ib+8*9+2] = _mm512_mul_pd(_a,_x[ib+8*9+2]);
+            Z[ib+8*9+3] = _mm512_mul_pd(_a,_x[ib+8*9+3]);
+            Z[ib+8*9+4] = _mm512_mul_pd(_a,_x[ib+8*9+4]);
+            Z[ib+8*9+5] = _mm512_mul_pd(_a,_x[ib+8*9+5]);
+            Z[ib+8*9+6] = _mm512_mul_pd(_a,_x[ib+8*9+6]);
+            Z[ib+8*9+7] = _mm512_mul_pd(_a,_x[ib+8*9+7]);
+
+            Z[ib+8*10+0] = _mm512_mul_pd(_a,_x[ib+8*10+0]);
+            Z[ib+8*10+1] = _mm512_mul_pd(_a,_x[ib+8*10+1]);
+            Z[ib+8*10+2] = _mm512_mul_pd(_a,_x[ib+8*10+2]);
+            Z[ib+8*10+3] = _mm512_mul_pd(_a,_x[ib+8*10+3]);
+            Z[ib+8*10+4] = _mm512_mul_pd(_a,_x[ib+8*10+4]);
+            Z[ib+8*10+5] = _mm512_mul_pd(_a,_x[ib+8*10+5]);
+            Z[ib+8*10+6] = _mm512_mul_pd(_a,_x[ib+8*10+6]);
+            Z[ib+8*10+7] = _mm512_mul_pd(_a,_x[ib+8*10+7]);
+
+            Z[ib+8*11+0] = _mm512_mul_pd(_a,_x[ib+8*11+0]);
+            Z[ib+8*11+1] = _mm512_mul_pd(_a,_x[ib+8*11+1]);
+            Z[ib+8*11+2] = _mm512_mul_pd(_a,_x[ib+8*11+2]);
+            Z[ib+8*11+3] = _mm512_mul_pd(_a,_x[ib+8*11+3]);
+            Z[ib+8*11+4] = _mm512_mul_pd(_a,_x[ib+8*11+4]);
+            Z[ib+8*11+5] = _mm512_mul_pd(_a,_x[ib+8*11+5]);
+            Z[ib+8*11+6] = _mm512_mul_pd(_a,_x[ib+8*11+6]);
+            Z[ib+8*11+7] = _mm512_mul_pd(_a,_x[ib+8*11+7]);
+
+            Z[ib+8*12+0] = _mm512_mul_pd(_a,_x[ib+8*12+0]);
+            Z[ib+8*12+1] = _mm512_mul_pd(_a,_x[ib+8*12+1]);
+            Z[ib+8*12+2] = _mm512_mul_pd(_a,_x[ib+8*12+2]);
+            Z[ib+8*12+3] = _mm512_mul_pd(_a,_x[ib+8*12+3]);
+            Z[ib+8*12+4] = _mm512_mul_pd(_a,_x[ib+8*12+4]);
+            Z[ib+8*12+5] = _mm512_mul_pd(_a,_x[ib+8*12+5]);
+            Z[ib+8*12+6] = _mm512_mul_pd(_a,_x[ib+8*12+6]);
+            Z[ib+8*12+7] = _mm512_mul_pd(_a,_x[ib+8*12+7]);
+
+            Z[ib+8*13+0] = _mm512_mul_pd(_a,_x[ib+8*13+0]);
+            Z[ib+8*13+1] = _mm512_mul_pd(_a,_x[ib+8*13+1]);
+            Z[ib+8*13+2] = _mm512_mul_pd(_a,_x[ib+8*13+2]);
+            Z[ib+8*13+3] = _mm512_mul_pd(_a,_x[ib+8*13+3]);
+            Z[ib+8*13+4] = _mm512_mul_pd(_a,_x[ib+8*13+4]);
+            Z[ib+8*13+5] = _mm512_mul_pd(_a,_x[ib+8*13+5]);
+            Z[ib+8*13+6] = _mm512_mul_pd(_a,_x[ib+8*13+6]);
+            Z[ib+8*13+7] = _mm512_mul_pd(_a,_x[ib+8*13+7]);
+
+            Z[ib+8*14+0] = _mm512_mul_pd(_a,_x[ib+8*14+0]);
+            Z[ib+8*14+1] = _mm512_mul_pd(_a,_x[ib+8*14+1]);
+            Z[ib+8*14+2] = _mm512_mul_pd(_a,_x[ib+8*14+2]);
+            Z[ib+8*14+3] = _mm512_mul_pd(_a,_x[ib+8*14+3]);
+            Z[ib+8*14+4] = _mm512_mul_pd(_a,_x[ib+8*14+4]);
+            Z[ib+8*14+5] = _mm512_mul_pd(_a,_x[ib+8*14+5]);
+            Z[ib+8*14+6] = _mm512_mul_pd(_a,_x[ib+8*14+6]);
+            Z[ib+8*14+7] = _mm512_mul_pd(_a,_x[ib+8*14+7]);
+
+            Z[ib+8*15+0] = _mm512_mul_pd(_a,_x[ib+8*15+0]);
+            Z[ib+8*15+1] = _mm512_mul_pd(_a,_x[ib+8*15+1]);
+            Z[ib+8*15+2] = _mm512_mul_pd(_a,_x[ib+8*15+2]);
+            Z[ib+8*15+3] = _mm512_mul_pd(_a,_x[ib+8*15+3]);
+            Z[ib+8*15+4] = _mm512_mul_pd(_a,_x[ib+8*15+4]);
+            Z[ib+8*15+5] = _mm512_mul_pd(_a,_x[ib+8*15+5]);
+            Z[ib+8*15+6] = _mm512_mul_pd(_a,_x[ib+8*15+6]);
+            Z[ib+8*15+7] = _mm512_mul_pd(_a,_x[ib+8*15+7]);
 
           } 
 #endif
