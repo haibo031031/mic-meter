@@ -206,6 +206,44 @@ int main(int argc, char** argv)
             Z[ib+8*3+6] = _mm512_mul_pd(_a,_x[ib+8*3+6]);
             Z[ib+8*3+7] = _mm512_mul_pd(_a,_x[ib+8*3+7]);
 
+            Z[ib+32+0] = _mm512_mul_pd(_a,_x[ib+32+0]);
+            Z[ib+32+1] = _mm512_mul_pd(_a,_x[ib+32+1]);
+            Z[ib+32+2] = _mm512_mul_pd(_a,_x[ib+32+2]);
+            Z[ib+32+3] = _mm512_mul_pd(_a,_x[ib+32+3]);
+            Z[ib+32+4] = _mm512_mul_pd(_a,_x[ib+32+4]);
+            Z[ib+32+5] = _mm512_mul_pd(_a,_x[ib+32+5]);
+            Z[ib+32+6] = _mm512_mul_pd(_a,_x[ib+32+6]);
+            Z[ib+32+7] = _mm512_mul_pd(_a,_x[ib+32+7]);
+
+
+            Z[ib+40+0] = _mm512_mul_pd(_a,_x[ib+40+0]);
+            Z[ib+40+1] = _mm512_mul_pd(_a,_x[ib+40+1]);
+            Z[ib+40+2] = _mm512_mul_pd(_a,_x[ib+40+2]);
+            Z[ib+40+3] = _mm512_mul_pd(_a,_x[ib+40+3]);
+            Z[ib+40+4] = _mm512_mul_pd(_a,_x[ib+40+4]);
+            Z[ib+40+5] = _mm512_mul_pd(_a,_x[ib+40+5]);
+            Z[ib+40+6] = _mm512_mul_pd(_a,_x[ib+40+6]);
+            Z[ib+40+7] = _mm512_mul_pd(_a,_x[ib+40+7]);
+
+            Z[ib+48+0] = _mm512_mul_pd(_a,_x[ib+48+0]);
+            Z[ib+48+1] = _mm512_mul_pd(_a,_x[ib+48+1]);
+            Z[ib+48+2] = _mm512_mul_pd(_a,_x[ib+48+2]);
+            Z[ib+48+3] = _mm512_mul_pd(_a,_x[ib+48+3]);
+            Z[ib+48+4] = _mm512_mul_pd(_a,_x[ib+48+4]);
+            Z[ib+48+5] = _mm512_mul_pd(_a,_x[ib+48+5]);
+            Z[ib+48+6] = _mm512_mul_pd(_a,_x[ib+48+6]);
+            Z[ib+48+7] = _mm512_mul_pd(_a,_x[ib+48+7]);
+
+            Z[ib+56+0] = _mm512_mul_pd(_a,_x[ib+56+0]);
+            Z[ib+56+1] = _mm512_mul_pd(_a,_x[ib+56+1]);
+            Z[ib+56+2] = _mm512_mul_pd(_a,_x[ib+56+2]);
+            Z[ib+56+3] = _mm512_mul_pd(_a,_x[ib+56+3]);
+            Z[ib+56+4] = _mm512_mul_pd(_a,_x[ib+56+4]);
+            Z[ib+56+5] = _mm512_mul_pd(_a,_x[ib+56+5]);
+            Z[ib+56+6] = _mm512_mul_pd(_a,_x[ib+56+6]);
+            Z[ib+56+7] = _mm512_mul_pd(_a,_x[ib+56+7]);
+
+
           } 
 #endif
           asm("#t0-end");

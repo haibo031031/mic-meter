@@ -180,7 +180,7 @@ int main(int argc, char** argv)
           const int cnts = elems >> 3;
           const __m512d  _a = _mm512_set1_pd(alpha);                           
           int ib;
-          for (ib = 0; ib < cnts; ib += 8)
+          for (ib = 0; ib < cnts; ib += 8*8)
           { 
             Z[ib+0] = _mm512_add_pd(_y[ib+0], _mm512_mul_pd(_a,_x[ib+0]));
             Z[ib+1] = _mm512_add_pd(_y[ib+1], _mm512_mul_pd(_a,_x[ib+1]));
@@ -190,6 +190,9 @@ int main(int argc, char** argv)
             Z[ib+5] = _mm512_add_pd(_y[ib+5], _mm512_mul_pd(_a,_x[ib+5]));
             Z[ib+6] = _mm512_add_pd(_y[ib+6], _mm512_mul_pd(_a,_x[ib+6]));
             Z[ib+7] = _mm512_add_pd(_y[ib+7], _mm512_mul_pd(_a,_x[ib+7]));
+
+
+
           } 
 #endif
           asm("#t0-end");
@@ -200,7 +203,7 @@ int main(int argc, char** argv)
 		}	
 		t_min = (t_end - t_start)/reps;		
 		printf("%lf,%lf,%lf,%lf\n", ret_t0, ret_t1, ret_t2, ret_t3);
-		SAVE_DATA("%lf\t", bytes/1024, 3*nthreads*bytes/t_min);
+		SAVE_DATA("%lf\t", 3*nthreads*bytes/t_min);
     printf("cbw: %lf\t elems= %d mem_tot= %d\n", 3*nthreads*bytes/t_min, elems/8, 3*elems*sizeof(DT)*nthreads);
 		if(memA_t0!=NULL) _mm_free(memA_t0);
 		if(memA_t1!=NULL) _mm_free(memA_t1);

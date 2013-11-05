@@ -168,7 +168,7 @@ int main(int argc, char** argv)
           const int cnts = elems >> 3;
           const __m512d  _a = _mm512_set1_pd(alpha);                           
           int ib;
-          for (ib = 0; ib < cnts; ib += 8*16)
+          for (ib = 0; ib < cnts; ib += 8*8)
           { 
             Z[ib+8*0+0] = _mm512_mul_pd(_a,_x[ib+8*0+0]);
             Z[ib+8*0+1] = _mm512_mul_pd(_a,_x[ib+8*0+1]);
