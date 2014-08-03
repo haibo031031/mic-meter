@@ -2,6 +2,6 @@
 
 Measure the startup overhead of a Phi device. 
 
-The outout is in ms. Our measured number is around 240 ms.
+The outout is in ms.
 
 August 3, 2014
